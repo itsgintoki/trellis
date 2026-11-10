@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d0e0b" />
+    <meta
+      name="description"
+      content="Trellis is a chat agent that remembers past conversations and verifies changing facts on the web."
+    />
+    <title>Trellis — memory + live web</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0e0b'/%3E%3Cpath d='M16 6v20M6 16h20M9 9l14 14M23 9L9 23' stroke='%23c9e98c' stroke-width='2'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Conversations">
+        <div class="sidebar-top">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3L5.3 18.7" />
+              </svg>
+            </span>
+            <span class="brand-name">Trellis</span>
+          </div>
+          <button class="icon-button close-sidebar" id="closeSidebar" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+
+        <button class="new-chat" id="newChat" type="button">
+          <span class="plus" aria-hidden="true">+</span>
+          <span>New chat</span>
+          <span class="kbd" aria-hidden="true">Ctrl K</span>
+        </button>
+
+        <div class="sidebar-label">History</div>
+        <nav class="conversation-list" id="conversationList" aria-label="Past conversations"></nav>
+
+        <div class="sidebar-bottom">
+          <div class="status-line" id="llmStatus">
+            <span class="status-dot"></span>
+            <span class="status-text">Checking model…</span>
+          </div>
+          <div class="status-line" id="searchStatus">
+            <span class="status-dot"></span>
+            <span class="status-text">Checking search…</span>
+          </div>
+          <p class="privacy-note">
+            Memory lives in a local SQLite file. Past chats are available across sessions in this
+            app.
+          </p>
+        </div>
+      </aside>
+
+      <div class="scrim" id="scrim" hidden></div>
+
+      <main class="main">
+        <header class="topbar">
+          <button class="icon-button menu-button" id="menuButton" aria-label="Open conversations">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+          <div class="topbar-text">
+            <h1 class="conversation-title" id="conversationTitle">New conversation</h1>
+            <p class="topbar-sub" id="topbarSub">Memory + live web</p>
+          </div>
+          <div class="model-chip" id="modelChip">agent</div>
+        </header>
+
+        <div class="scroll" id="scroll">
+          <div class="thread" id="thread" role="log" aria-label="Conversation"></div>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="setup-banner" id="setupBanner" hidden>
+            <div>
+              <strong>Add a chat key to start.</strong>
+              Copy <code>.env.example</code> to <code>.env</code>, set
+              <code>GROQ_API_KEY</code> (free) or <code>OPENAI_API_KEY</code>, then restart
+              <code>npm run dev</code>.
+            </div>
+          </div>
+          <form class="composer" id="composer" autocomplete="off">
+            <div class="composer-box">
+              <textarea
+                id="input"
+                rows="1"
+                placeholder="Ask anything — or ask what we discussed last Tuesday."
+                aria-label="Message Trellis"
+              ></textarea>
+              <div class="composer-actions">
+                <span class="composer-note" id="composerNote">Enter to send</span>
+                <div class="composer-buttons">
+                  <button class="stop-button" id="stopButton" type="button" hidden>Stop</button>
+                  <button class="send-button" id="sendButton" type="submit" aria-label="Send message">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p class="composer-hint">
+              Trellis remembers chats stored here. Check anything that matters.
+            </p>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
